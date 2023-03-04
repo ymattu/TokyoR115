@@ -516,9 +516,6 @@ document.getElementsByTagName('head')[0].appendChild(style);
     <link href="slide_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
     <link href="slide_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
     <script src="slide_files/htmlwidgets-1.6.1/htmlwidgets.js"></script>
-    <script src="slide_files/viz-1.8.2/viz.js"></script>
-    <link href="slide_files/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-    <script src="slide_files/grViz-binding-1.0.9/grViz.js"></script>
     <link href="slide_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
     <script src="slide_files/datatables-binding-0.27/datatables.js"></script>
     <script src="slide_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -538,7 +535,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
     <h1 class="title">初心者セッション</h1>
   <h1 class="subtitle">R入門〜データ読み込み</h1>
     <h2 class="author">y__mattu</h2>
-    <h3 class="date">2023-01-21 TokyoR #103</h3>
+    <h3 class="date">2023-03-04 TokyoR #104</h3>
 </section>
 
 <section>
@@ -575,7 +572,7 @@ R ユーザのための RStudio[実践]入門 <br> − tidyverse
 <div class="column1">
 <p><img data-src="slide_img/rstudiobook2.jpg" alt="rstudiobook" /></p>
 </section>
-<section id="advertise" class="slide level2">
+<section id="advertise2" class="slide level2">
 <h2>宣伝2</h2>
 <h4
 id="r-ユーザのための-tidymodels実践入門-モダンな統計機械学習モデリングの世界"><strong>R
@@ -599,7 +596,7 @@ alt="rstudiobook" /></p>
 <li>R と RStudio について</li>
 <li>tidyverse について</li>
 <li>テーブルデータの読み込み</li>
-<li>※細かいデータハンドリングの方法や</li>
+<li>※細かいデータハンドリングの方法や可視化についてはこの後の初心者セッションで</li>
 </ul>
 </section>
 <section id="attention" class="slide level2">
@@ -611,8 +608,13 @@ alt="rstudiobook" /></p>
 </section>
 <section id="flow_of_analysis" class="slide level2">
 <h2>データ分析の(おおまかな)流れ</h2>
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1eb4625efd02e50746b0" style="width:600px;height:300px;"></div>
-<script type="application/json" data-for="htmlwidget-1eb4625efd02e50746b0">{"x":{"diagram":"\ndigraph data_analytics {\n      # graph\n      graph [overlap = true, fontsize = 10]\n      # node\n      node [shape=box,\n      fontname = Helvetica,\n      style = filled,\n      fillcolor = SteelBlue,\n      fontcolor = white]\n      データ読み込み;可視化・モデリング; 前処理;\n      # edge\n      データ読み込み->前処理\n      前処理->可視化・モデリング\n      }\n      ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p><img data-src="slide_img/data_analysis1.png" /></p>
+<p><span style="font-size: 50%;">“R for Data Science”, H.Wickham,
+2017より作成</span></p>
+</section>
+<section id="flow_of_analysis2" class="slide level2">
+<h2>データ分析の(おおまかな)流れ</h2>
+<p><img data-src="slide_img/data_analysis2.png" /></p>
 </section></section>
 <section>
 <section id="r_and_rstudio" class="title-slide slide level1">
@@ -704,16 +706,16 @@ href="https://rstudio.com/">RStudio</a></li>
 <h2>RStudioのインストール</h2>
 <ul>
 <li><a
-href="https://posit.co/download/rstudio-desktop/">Positのダウンロードページ</a>から
-<img data-src="slide_img/posit_rstudio.png" /></li>
+href="https://posit.co/download/rstudio-desktop/">Positのダウンロードページ</a>から</li>
 </ul>
+<p><img data-src="slide_img/posit_rstudio.png" /></p>
 </section>
 <section id="rstudioのインストール-1" class="slide level2">
 <h2>RStudioのインストール</h2>
 <ul>
-<li>自分の環境に合ったものをダウンロードしてインストール <img
-data-src="slide_img/download_rstudio.png" /></li>
+<li>自分の環境に合ったものをダウンロードしてインストール</li>
 </ul>
+<p><img data-src="slide_img/download_rstudio.png" /></p>
 </section></section>
 <section>
 <section id="tidyverse" class="title-slide slide level1">
@@ -775,8 +777,8 @@ data-src="slide_img/download_rstudio.png" /></li>
 </ul></li>
 <li>様々な読み込み関数を使って読み込み
 <ul>
-<li><strong>ローカルにあるファイル</strong>(今日の中心)</li>
-<li><strong>データベース</strong>(パッケージの紹介のみ)</li>
+<li><strong>ローカルにあるファイル</strong>(今日の内容)</li>
+<li><strong>データベース</strong>(またの機会に…)</li>
 <li>Web スクレイピング(またの機会に…)</li>
 </ul></li>
 </ol>
@@ -981,7 +983,7 @@ class="title-slide slide level1">
 <section id="datahandling_contents" class="slide level2">
 <h2>データハンドリング編のコンテンツ</h2>
 <ol start="0" type="1">
-<li>パイプ演算子</li>
+<li>パイプ演算子導入</li>
 <li>tidy data</li>
 </ol>
 </section>
@@ -1022,31 +1024,6 @@ data-src="slide_img/tidyr_logo.png" alt="tidyr" /></p>
 <pre><code>[1] 6</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># これと全く同じ</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span></code></pre></div>
-</section>
-<section id="robot_example" class="slide level2">
-<h2>例えば、以下の動作を考えてみる</h2>
-<p><img data-src="slide_img/robot1.png" /></p>
-</section>
-<section id="howtowrite" class="slide level2">
-<h2>どう書くのか問題</h2>
-<p><img data-src="slide_img/robot2.png" /></p>
-</section>
-<section id="pipeline" class="slide level2">
-<h2>思考の流れと書く流れ</h2>
-<p><img data-src="slide_img/robot3.png" /></p>
-</section>
-<section id="hint_pipe" class="slide level2">
-<h2>パイプ演算子を使うときのポイント</h2>
-<ul>
-<li><code>結果 &lt;- スタート地点</code>
-を書いて、やりたい処理をパイプでつないでいく</li>
-<li>RStudioでのキーボードショートカット(<code>%&gt;%</code>)
-<ul>
-<li>Windows: <code>Ctrl</code> + <code>Shift</code> +
-<code>M</code></li>
-<li>Mac: <code>Cmd</code> + <code>Shift</code> + <code>M</code></li>
-</ul></li>
-</ul>
 </section></section>
 <section>
 <section id="tidydata" class="title-slide slide level1">
@@ -1058,13 +1035,13 @@ data-src="slide_img/tidyr_logo.png" alt="tidyr" /></p>
 <p>２つのデータ形式(例: カテゴリごとの購買金額(千円))</p>
 <section id="wide-型" class="column1">
 <h3>Wide 型</h3>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-9faab7c68b535fb4db47" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-9faab7c68b535fb4db47">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3"],["A","B","C"],[10,15,8],[2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category1<\/th>\n      <th>category2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f480e6311ec56fcffaed" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f480e6311ec56fcffaed">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3"],["A","B","C"],[10,15,8],[2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category1<\/th>\n      <th>category2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </section>
 <section id="long-型" class="column2">
 <h3>Long 型</h3>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-52bb64c3772f97095a8a" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-52bb64c3772f97095a8a">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3","4","5","6"],["A","B","C","A","B","C"],["category1","category1","category1","category2","category2","category2"],[10,15,8,2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category<\/th>\n      <th>sum_price<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-876d0f9e38f46a899a2d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-876d0f9e38f46a899a2d">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3","4","5","6"],["A","B","C","A","B","C"],["category1","category1","category1","category2","category2","category2"],[10,15,8,2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category<\/th>\n      <th>sum_price<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </section>
 </section>
 <section id="def_tidydata" class="slide level2">

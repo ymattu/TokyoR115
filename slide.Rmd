@@ -2,7 +2,7 @@
 title: "初心者セッション"
 subtitle: "R入門〜データ読み込み"
 author: "y__mattu"
-date: "2023-01-21 TokyoR #103"
+date: "2023-03-04 TokyoR #104"
 output:
   revealjs::revealjs_presentation:
     self_contained: false
@@ -72,33 +72,19 @@ options(dplyr.print_max = 1e9)
 - R と RStudio について 
 - tidyverse について
 - テーブルデータの読み込み
-- ※細かいデータハンドリングの方法や
+- ※細かいデータハンドリングの方法や可視化についてはこの後の初心者セッションで
 
 ## 注意 {#attention}
 - 参考リンクも多いので資料は後でじっくり御覧ください。
 - パッケージ名だけでも覚えて帰っていただけると嬉しいです。
 
 ## データ分析の(おおまかな)流れ {#flow_of_analysis}
-```{r echo=FALSE}
-library(DiagrammeR)
-grViz("
-digraph data_analytics {
-      # graph
-      graph [overlap = true, fontsize = 10]
-      # node
-      node [shape=box,
-      fontname = Helvetica,
-      style = filled,
-      fillcolor = SteelBlue,
-      fontcolor = white]
-      データ読み込み;可視化・モデリング; 前処理;
-      # edge
-      データ読み込み->前処理
-      前処理->可視化・モデリング
-      }
-      ")
-```
+![](slide_img/data_analysis1.png)
 
+<span style="font-size: 50%;">"R for Data Science", H.Wickham, 2017より作成</span>
+
+## データ分析の(おおまかな)流れ {#flow_of_analysis2}
+![](slide_img/data_analysis2.png)
 
 # RとRStudioについて {#r_and_rstudio}
 ## Rとは {#aboutR}
@@ -151,10 +137,12 @@ dat <- readr::read_csv("hoge.csv")
 
 ## RStudioのインストール
 - [Positのダウンロードページ](https://posit.co/download/rstudio-desktop/)から
+
 ![](./slide_img/posit_rstudio.png)
 
 ## RStudioのインストール
 - 自分の環境に合ったものをダウンロードしてインストール
+
 ![](./slide_img/download_rstudio.png)
 
 
@@ -196,8 +184,8 @@ library(tidyverse)
 0. RStudio でプロジェクトを作成
     - ファイルの位置が分かりやすくなります
 1. 様々な読み込み関数を使って読み込み
-    - **ローカルにあるファイル**(今日の中心)
-    - **データベース**(パッケージの紹介のみ)
+    - **ローカルにあるファイル**(今日の内容)
+    - **データベース**(またの機会に...)
     - Web スクレイピング(またの機会に...)
 
 # RStudio でプロジェクトを作成
@@ -328,7 +316,7 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 →分析できる形に整形
 
 ## データハンドリング編のコンテンツ {#datahandling_contents}
-0. パイプ演算子
+0. パイプ演算子導入
 1. tidy data
 
 ## 主役は {#shuyaku}
@@ -362,20 +350,6 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 sum(1:3)
 ```
 
-## 例えば、以下の動作を考えてみる {#robot_example}
-![](slide_img/robot1.png)
-
-## どう書くのか問題 {#howtowrite}
-![](slide_img/robot2.png)
-
-## 思考の流れと書く流れ {#pipeline}
-![](slide_img/robot3.png)
-
-## パイプ演算子を使うときのポイント {#hint_pipe}
-- `結果 <- スタート地点` を書いて、やりたい処理をパイプでつないでいく
-- RStudioでのキーボードショートカット(`%>%`)
-    - Windows: `Ctrl` + `Shift` + `M`
-    - Mac: `Cmd` + `Shift` + `M`
 
 # tidy data {#tidydata}
 ## データの形式 {#data_format}
