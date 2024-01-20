@@ -57,12 +57,13 @@ options(dplyr.print_max = 1e9)
 #### **改訂2版 R ユーザのための RStudio[実践]入門 <br> − tidyverse によるモダンな分析フローの世界−**
 <div class="column1">
 ![rstudiobook](./slide_img/rstudiobook2.jpg)
+</div>
 
 ## 宣伝2 {#advertise2}
 #### **R ユーザのための tidymodels[実践]入門 <br> − モダンな統計・機械学習モデリングの世界−**
 <div class="column1">
 ![tidymodelsbook](./slide_img/tidymodelsbook.jpg)
-
+</div>
 
 ## この資料の目的
 - R 初心者（触ったことはあるけど、なんかよくわからない）が、雰囲気を掴む
