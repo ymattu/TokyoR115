@@ -535,7 +535,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
     <h1 class="title">初心者セッション</h1>
   <h1 class="subtitle">R入門〜データ読み込み</h1>
     <h2 class="author">y__mattu</h2>
-    <h3 class="date">2023-03-04 TokyoR #104</h3>
+    <h3 class="date">2024-01-20 TokyoR #110</h3>
 </section>
 
 <section>
@@ -549,9 +549,10 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <ul>
 <li>松村優哉</li>
 <li><u>Twitter</u>: <strong>y__mattu</strong></li>
-<li>広告系のの会社で働くデータ屋さん</li>
+<li>Data Scientist <span class="citation"
+data-cites="Novasell">@Novasell</span></li>
 <li>学生時代: 計量経済学、ベイズ統計、因果推論、マーケティング</li>
-<li>R歴: 9年目</li>
+<li>R歴: 10年目</li>
 <li><a href="https://ymattu.github.io/"
 class="uri">https://ymattu.github.io/</a></li>
 <li><a href="http://y-mattu.hatenablog.com/"
@@ -588,6 +589,24 @@ alt="rstudiobook" /></p>
 <li>R
 初心者（触ったことはあるけど、なんかよくわからない）が、雰囲気を掴む</li>
 <li>「自分でもできそう！」って思い込む</li>
+</ul>
+</section>
+<section id="bignner_session_in_AI_erra1" class="slide level2">
+<h2>AI時代の初心者セッション</h2>
+<ul>
+<li>ChatGPTに聞けば、R言語でもデータ読み込み〜簡単な分析まではできる</li>
+<li>GitHub
+Copilotがあれば、tabを押していくだけでデータ読み込み〜簡単な分析まではできる</li>
+<li>実際、このスライドを作ってるときもCopilotがsuggestしてくれたのでtabを押すだけで良かった場面もあった(実際は微妙に修正した)</li>
+</ul>
+<p><img data-src="slide_img/copilot_screenshot.png" /></p>
+</section>
+<section id="bignner_session_in_AI_erra2" class="slide level2">
+<h2>AI時代の初心者セッション</h2>
+<ul>
+<li>ただ、AIの回答が正しいかどうかは自分で判断する必要がある</li>
+<li>AIの回答が正しいかどうかを判断するための基礎知識</li>
+<li>また、<strong>「AIに聞くためのインデックス」がないとAIに聞くのも難しい</strong>ので、そのインデックスを作ることが目的</li>
 </ul>
 </section>
 <section id="contents" class="slide level2">
@@ -644,12 +663,12 @@ alt="rstudiobook" /></p>
 <ul>
 <li>R のインストールは、<a
 href="https://www.r-project.org/">CRAN</a>から、自分のOSに合ったものを。</li>
-<li>2023/01/21時点の最新版は、4.2.2
+<li>2024/01/20時点の最新版は、4.3.2
 <ul>
 <li>本日の内容に関しては、4.X.X以上であれば概ね問題ないと思われます</li>
 </ul></li>
 </ul>
-<p><img data-src="slide_img/r422.png" /></p>
+<p><img data-src="slide_img/r432.png" /></p>
 <ul>
 <li>3.X.X→4.X.Xの変更点
 <ul>
@@ -1035,13 +1054,13 @@ data-src="slide_img/tidyr_logo.png" alt="tidyr" /></p>
 <p>２つのデータ形式(例: カテゴリごとの購買金額(千円))</p>
 <section id="wide-型" class="column1">
 <h3>Wide 型</h3>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f480e6311ec56fcffaed" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f480e6311ec56fcffaed">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3"],["A","B","C"],[10,15,8],[2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category1<\/th>\n      <th>category2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-43e0904a9e2a0939b3d0" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-43e0904a9e2a0939b3d0">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3"],["A","B","C"],[10,15,8],[2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category1<\/th>\n      <th>category2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </section>
 <section id="long-型" class="column2">
 <h3>Long 型</h3>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-876d0f9e38f46a899a2d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-876d0f9e38f46a899a2d">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3","4","5","6"],["A","B","C","A","B","C"],["category1","category1","category1","category2","category2","category2"],[10,15,8,2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category<\/th>\n      <th>sum_price<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b24c0bb056f9d6729159" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b24c0bb056f9d6729159">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3","4","5","6"],["A","B","C","A","B","C"],["category1","category1","category1","category2","category2","category2"],[10,15,8,2,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>user<\/th>\n      <th>category<\/th>\n      <th>sum_price<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","scrollX":true,"scrollCollapse":true,"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </section>
 </section>
 <section id="def_tidydata" class="slide level2">

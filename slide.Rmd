@@ -2,7 +2,7 @@
 title: "初心者セッション"
 subtitle: "R入門〜データ読み込み"
 author: "y__mattu"
-date: "2023-03-04 TokyoR #104"
+date: "2024-01-20 TokyoR #110"
 output:
   revealjs::revealjs_presentation:
     self_contained: false
@@ -41,9 +41,9 @@ options(dplyr.print_max = 1e9)
 <div class="column1">
 - 松村優哉
 - <u>Twitter</u>: **y\_\_mattu**
-- 広告系のの会社で働くデータ屋さん
+- Data Scientist @Novasell
 - 学生時代: 計量経済学、ベイズ統計、因果推論、マーケティング
-- R歴: 9年目
+- R歴: 10年目
 - https://ymattu.github.io/
 - http://y-mattu.hatenablog.com/
 - Tokyo.R 運営(初心者セッションとか)
@@ -67,6 +67,18 @@ options(dplyr.print_max = 1e9)
 ## この資料の目的
 - R 初心者（触ったことはあるけど、なんかよくわからない）が、雰囲気を掴む
 - 「自分でもできそう！」って思い込む
+
+## AI時代の初心者セッション {#bignner_session_in_AI_erra1}
+- ChatGPTに聞けば、R言語でもデータ読み込み〜簡単な分析まではできる
+- GitHub Copilotがあれば、tabを押していくだけでデータ読み込み〜簡単な分析まではできる
+- 実際、このスライドを作ってるときもCopilotがsuggestしてくれたのでtabを押すだけで良かった場面もあった(実際は微妙に修正した)
+
+![](slide_img/copilot_screenshot.png)
+
+## AI時代の初心者セッション {#bignner_session_in_AI_erra2}
+- ただ、AIの回答が正しいかどうかは自分で判断する必要がある
+- AIの回答が正しいかどうかを判断するための基礎知識
+- また、**「AIに聞くためのインデックス」がないとAIに聞くのも難しい**ので、そのインデックスを作ることが目的
 
 ## Contents {#contents}
 - R と RStudio について 
@@ -101,10 +113,10 @@ options(dplyr.print_max = 1e9)
 
 ## R の環境構築 {#installR}
 - R のインストールは、[CRAN](https://www.r-project.org/)から、自分のOSに合ったものを。
-- 2023/01/21時点の最新版は、4.2.2
+- 2024/01/20時点の最新版は、4.3.2
     - 本日の内容に関しては、4.X.X以上であれば概ね問題ないと思われます
     
-![](./slide_img/r422.png)
+![](./slide_img/r432.png)
 
 - 3.X.X→4.X.Xの変更点
     - [R 4.0.0 リリース - Qiita](https://qiita.com/piccolist/items/80f47a11d68dfe904cca)
