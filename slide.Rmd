@@ -53,7 +53,7 @@ options(dplyr.print_max = 1e9)
 ![icon](./slide_img/twitter_icon.jpg)
 </div>
 
-## 宣伝1 {#advertise}
+## 宣伝 {#advertise}
 #### **改訂2版 R ユーザのための RStudio[実践]入門 <br> − tidyverse によるモダンな分析フローの世界−**
 <div class="column1">
 ![rstudiobook](./slide_img/rstudiobook2.jpg)
@@ -65,7 +65,7 @@ options(dplyr.print_max = 1e9)
 ![tidymodelsbook](./slide_img/tidymodelsbook.jpg)
 </div>
 
-## この資料の目的
+## この資料の目的 {#purpose}
 - R 初心者（触ったことはあるけど、なんかよくわからない）が、雰囲気を掴む
 - 「自分でもできそう！」って思い込む
 
