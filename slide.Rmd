@@ -1,6 +1,6 @@
 ---
 title: "初心者セッション"
-subtitle: "R入門〜データ読み込み"
+subtitle: "R入門〜データハンドリング基礎"
 author: "y__mattu"
 date: "2024-02-24 TokyoR #111"
 output:
