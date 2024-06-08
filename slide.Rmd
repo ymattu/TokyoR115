@@ -2,7 +2,7 @@
 title: "初心者セッション"
 subtitle: "R入門〜データハンドリング基礎"
 author: "y__mattu"
-date: "2024-02-24 TokyoR #111"
+date: "2024-06-08 TokyoR #113"
 output:
   revealjs::revealjs_presentation:
     self_contained: false
@@ -114,7 +114,7 @@ options(dplyr.print_max = 1e9)
 
 ## R の環境構築 {#installR}
 - R のインストールは、[CRAN](https://www.r-project.org/)から、自分のOSに合ったものを。
-- 2024/02/24時点の最新版は、4.3.2
+- 2024/06/08時点の最新版は、4.4.0
     - 本日の内容に関しては、4.X.X以上であれば概ね問題ないと思われます
     
 ![](./slide_img/r432to433.png)
