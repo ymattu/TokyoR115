@@ -70,7 +70,7 @@ options(dplyr.print_max = 1e9)
 - 「自分でもできそう！」って思い込む
 
 ## AI時代の初心者セッション {#bignner_session_in_AI_erra1}
-- ChatGPTに聞けば、R言語でもデータ読み込み〜簡単な分析まではできる
+- ChatGPTやClaudeに聞けば、R言語でもデータ読み込み〜簡単な分析まではできる
 - GitHub Copilotがあれば、tabを押していくだけでデータ読み込み〜簡単な分析まではできる
 - 実際、このスライドを作ってるときもCopilotがsuggestしてくれたのでtabを押すだけで良かった場面もあった(実際は微妙に修正した)
 
@@ -91,13 +91,8 @@ options(dplyr.print_max = 1e9)
 - 参考リンクも多いので資料は後でじっくり御覧ください。
 - パッケージ名だけでも覚えて帰っていただけると嬉しいです。
 
-## データ分析の(おおまかな)流れ {#flow_of_analysis}
-![](slide_img/data_analysis1.png)
-
-<span style="font-size: 50%;">"R for Data Science", H.Wickham, 2017より作成</span>
-
 ## データ分析の(おおまかな)流れ {#flow_of_analysis2}
-![](slide_img/data_analysis2.png)
+![](slide_img/data_analysis3.png)
 
 # RとRStudioについて {#r_and_rstudio}
 ## Rとは {#aboutR}
@@ -114,10 +109,10 @@ options(dplyr.print_max = 1e9)
 
 ## R の環境構築 {#installR}
 - R のインストールは、[CRAN](https://www.r-project.org/)から、自分のOSに合ったものを。
-- 2024/06/08時点の最新版は、4.4.0
+- 2024/07/13時点の最新版は、4.4.1
     - 本日の内容に関しては、4.X.X以上であれば概ね問題ないと思われます
     
-![](./slide_img/r432to433.png)
+![](./slide_img/r441.png)
 
 - 3.X.X→4.X.Xの変更点
     - [R 4.0.0 リリース - Qiita](https://qiita.com/piccolist/items/80f47a11d68dfe904cca)
@@ -222,136 +217,6 @@ library(tidyverse)
 - 書籍によっては `setwd()` で作業場所をしているものもある を書いているものもありますが、RStudioプロジェクトでは必要ありません。
     - むしろ、RStudio プロジェクトでは非推奨
 
-# いよいよデータの読み込み
-
-
-# ローカルにあるファイル
-
-# csv
-## `read.csv()`
-- パッケージを使わない方法
-```{r eval=FALSE}
-dat <- read.csv("sample.csv")
-```
-
-- R < 4.0.0 では `stringsAsFactors = TRUE` がデフォルトになっているので、`stringsAsFactors = FALSE` をつけることを推奨します。
-
-```{r eval=FALSE}
-dat <- read.csv("sample.csv", stringsAsFactors = FALSE)
-```
-
-## `readr::read_csv()`
-- 高速で、列の型をいい感じにやってくれる(オススメ)
-```{r eval=FALSE}
-dat <- readr::read_csv("sample.csv")
-```
-
-## `data.table::fread()`
-- `readr::read_csv()`
-よりも高速
-- デフォルトでは、data.table というデータフレームとは別の形で読み込まれるのでデータフレームがいいときは `data.table = FALSE`
-
-```{r eval=FALSE}
-library(data.table)
-dat <- fread("sample.csv", data.table = FALSE)
-```
-
-
-## どれがいいのか
-- 個人的には **readr**パッケージの `read_***()`関数が一番オススメ
-- 速い、エンコーディング（文字化け回避）の調整が難しくない
-
-|                        | read.\*\*\* | read_\*\*\* | fread |
-|------------------------|----------|----------|-------|
-| 速さ(45MB)            | 3秒    | 0.8 秒      |  0.6秒   |
-| 区切り値の判定ミス   | ×        | ×        | △     |
-| エンコーディング | ○        | ○        | △     |
-
-# xlsx, xls
-## エクセルファイル
-### エクセルファイルを読み込めるパッケージ
-- xlsx
-- gdata
-- XLConnect
-- openxlsx
-- **readxl** → オススメ(速い、列の型をいい感じに読める)
-
-## 読み込み方
-```{r eval=FALSE}
-dat <- readxl::read_excel("sample.xlsx", sheet = "シート名")
-# シート名はシート番号でも OK
-```
-
-
-# 文字コードの指定
-## エンコーディング問題
-- Windows の文字コードは **Shift-JIS（CP932）**
-- Mac の文字コードは **UTF8**
-- Windows で作られた（日本語を含む）ファイルを Mac で読むときは `Encoding=cp932`
-- Mac で作られた（日本語を含む）ファイルを Windows で読むときは `Encoding=UTF8`
-
-## csv を CP932 で読む
-### R の標準関数
-```{r eval=FALSE}
-dat <- read.csv("sample.csv", stringAsFactors = FALSE, fileEncoding = "cp932")
-```
-
-### readr
-```{r eval=FALSE}
-dat <- readr::read_csv("sample.csv", locale = locale(encoding = "cp932"))
-```
-
-### data.table
-```{r eval=FALSE}
-dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
-  dplyr::mutate(VAR1 = iconv(VAR1, from = "UTF8", to = "CP932"))
-```
-
-# 関数とかオプション（引数）を <br> 覚えられない
-## RStudio の GUI 読み込み {#importdataset1}
-
-![dataimport](./slide_img/dataimport.png)
-
-
-## RStudio の GUI 読み込み {#importdataset2}
-![dataimport2](./slide_img/dataimport2.png)
-
-
-# データハンドリング事始め {#datahandling}
-
-## データハンドリングでやること、例えば {#datahandling_todo}
-- 縦横変換
-- 絞り込み(列・行)
-- 新しい変数の作成
-- 集計
-- テーブルのマージ
-- etc...
-→分析できる形に整形
-
-## データハンドリング編のコンテンツ {#datahandling_contents}
-0. パイプ演算子導入  
-1. tidy data  
-2. dplyr
-
-## 主役は {#shuyaku}
-<div class="column1">
-<img src="./slide_img/dplyr1_logo.png" width="230">
-![tidyr](slide_img/tidyr_logo.png)
-
-</div>
-
-<div class="column2">
-#### 特徴
-パッケージを使わないやり方より
-
-- (大きいデータだと特に) <br> 速い
-- 簡単 <br> ≒　わかりやすい
-- 他の tidyverse のパッケージと相性がいい
-</div>
-
-## データハンドリング編のゴール {#datahandlinggoal}
-- tidy data についてざっくり理解する
-- dplyrで簡単な集計ができる
 
 # %>%, |> {#pipe}
 ## パイプ演算子 {#pipe_operator}
@@ -365,6 +230,20 @@ dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
 sum(1:3)
 ```
 
+## 例えば、以下の動作を考えてみる {#robot_example}
+![](slide_img/robot1.png)
+
+## どう書くのか問題 {#howtowrite}
+![](slide_img/robot2.png)
+
+## 思考の流れと書く流れ {#pipeline}
+![](slide_img/robot3.png)
+
+## パイプ演算子を使うときのポイント {#hint_pipe}
+- `結果 <- スタート地点` を書いて、やりたい処理をパイプでつないでいく
+- RStudioでのキーボードショートカット
+    - Windows: `Ctrl` + `Shift` + `M`
+    - Mac: `Cmd` + `Shift` + `M`
 
 # 1. tidy data {#tidydata}
 ## データの形式 {#data_format}
@@ -467,208 +346,6 @@ dat_long
 
 ## 参考: tidyr (〜2019/09/11) {#tidyr_old}
 ![gather_spread](slide_img/gather_spread.png)
-
-
-# 2. dplyr {#nowdplyr}
-
-# 扱うデータ {#todaysdata}
-## EC サイトのログデータ {#ecsitedata}
-- を意識して作ったダミーデータ
-- https://github.com/ymattu/sampledata_small
-![データの説明](slide_img/data_summary.png)
-
-## データの読み込み方 {#prepare_data}
-1. RStudio のプロジェクトを作成
-2. Terminal ペインで以下を実行
-```
-git clone https://github.com/ymattu/sampledata_small
-```
-3. readr パッケージの関数で読み込み
-```{r }
-sales <- read_csv("sampledata_small/csv/Sales.csv")
-product <- read_csv("sampledata_small/csv/Products.csv")
-user_master <- read_csv("sampledata_small/csv/UserMaster.csv")
-```
-
-# **dplyr** {#dplyr}
-## 列選択 {#select}
-```{r, eval=FALSE}
-sales %>%
-  select(UserID) %>%
-  head()
-```
-```{r,echo=FALSE}
-sales %>%
-  select(UserID) %>%
-  head() %>%
-  DT::datatable(extensions = 'FixedColumns',
-  options = list(
-    dom = 't',
-    scrollX = TRUE,
-    scrollCollapse = TRUE
-  ))
-```
-
-## 列選択のやりかたいろいろ {#selectfunctions}
-例
-```{r eval=FALSE}
-select(product, 1:3) # 列番号が連続している場合
-select(product, ProductID:Price) # 列名でも連続していれば同様
-select(product, !CreatedDate) # 特定の列を除く
-select(product, !4) # 特定の列番号を除く
-select(product, starts_with("p")) # "p"で始まる列のみを選択
-select(product, starts_with("p"), ignore.case = TRUE) # 大文字小文字を無視
-select(product, starts_with("p") & ends_with("e")) # "p"で始まり"e"で終わる列を選択
-select(product, matches("^(Product|Price)")) # 正規表現で列名を検索
-```
-
-- 詳しくは[公式リファレンス](https://dplyr.tidyverse.org/reference/select.html)を参照
-
-## 列追加 {#mutate}
-- 税込み価格を計算
-```{r, eval=FALSE}
-product %>%
-  mutate(zeikomi = Price * 1.1) %>%
-  head(4)
-```
-```{r, echo=FALSE}
-product %>%
-  mutate(zeikomi = Price * 1.1) %>%
-  head(4) %>%
-  DT::datatable(extensions =  'FixedColumns',
-  options = list(
-    dom = 't',
-    scrollX = TRUE,
-    scrollCollapse = TRUE
-  ))
-```
-
-## 行の絞り込み {#filter}
-```{r, eval=FALSE}
-user_master %>%
-  filter(Age >= 20, Sex == "F") # 年齢 20 歳以上の女性
-```
-```{r, echo=FALSE}
-user_master %>%
-  filter(Age >= 20, Sex == "F") %>%
-  DT::datatable(extensions =  'FixedColumns',
-  options = list(
-    deferRender = TRUE,
-    dom = "t",
-    scrollX = TRUE,
-    scrollY = 200,
-    scrollCollapse = TRUE
-  ))
-```
-
-## 集計
-- グルーピング + 集計
-```{r, eval=FALSE}
-sales %>%
-  group_by(UserID) %>%
-  summarise(buy_count = n())
-```
-```{r, echo=FALSE}
-sales %>%
-  group_by(UserID) %>%
-  summarise(buy_count = n()) %>%
-  DT::datatable(extensions =  'FixedColumns',
-  options = list(
-    deferRender = TRUE,
-    dom = "t",
-    scrollX = TRUE,
-    scrollY = 200,
-    scrollCollapse = TRUE
-  ))
-```
-
-# ここまでやったところで
-## パッケージを使わないでできないの？{#withoutpackage}
-- できるものもあります。
-- select, filter あたりはできます。
-- でもめんどくさい
-- しかもデータが大きいと遅い
-- このあたり、私の[過去資料](https://ymattu.github.io/TokyoR64/beginner/for_beginners.html#22)もみてね
-- でも`$`はお手軽だしよく使います。
-
-## `$`で 1 列だけ取り出す {#dollar}
-```{r }
-product$Category %>%
-  unique()
-```
-
-# 日付の操作 {#date}
-## **lubridate** パッケージ {#lubridate}
-<div class="column1">
-![lubridate](slide_img/lubridate.png)
-</div>
-<div class="column2">
-- 日付の操作をよしなにやってくれるパッケージ
-```{r }
-library(lubridate)
-ymd("20110604")
-ymd(20120101) + years(1)
-```
-詳しくは[こちら](http://estrellita.hatenablog.com/entry/2015/06/18/080651)や[こちら](http://estrellita.hatenablog.com/entry/2015/06/18/080651)を参照
-</div>
-
-## データハンドリングでの使い所 {#lubridate_dplyr}
-たくさんあるけど例えば
-```{r, eval=FALSE}
-sales %>%
-  mutate(buy_year = year(Timestamp)) %>%
-  head()
-```
-```{r, echo=FALSE}
-sales %>%
-  mutate(buy_year = year(Timestamp)) %>%
-  head() %>%
-  DT::datatable(extensions =  'FixedColumns',
-  options = list(
-    deferRender = TRUE,
-    dom = "t",
-    scrollX = TRUE,
-    scrollY = 200,
-    scrollCollapse = TRUE
-  ))
-```
-
-## ここから集計につなげる {#groupyear}
-ユーザー、年ごとに集計
-```{r, eval=FALSE}
-sales %>%
-  mutate(buy_year = year(Timestamp)) %>%
-  group_by(UserID, buy_year) %>%
-  summarise(buy_count = n()) %>%
-  arrange(UserID) %>% 
-  head()
-```
-```{r, echo=FALSE}
-sales %>%
- mutate(buy_year = year(Timestamp)) %>%
- group_by(UserID, buy_year) %>%
- summarise(buy_count = n()) %>%
- arrange(UserID) %>%
- head() %>%
- DT::datatable(extensions =  'FixedColumns',
- options = list(
-   deferRender = TRUE,
-   dom = "t",
-   scrollX = TRUE,
-   scrollY = 200,
-   scrollCollapse = TRUE
- ))
-```
-
-# その他、代表的な <br>（面倒くさい）型たち {#othertype}
-## 文字列型 {#character}
-- **stringr** パッケージ
-- https://kazutan.github.io/kazutanR/stringr-intro.html
-- 『RユーザーのためのRStudio実践入門　改定2版』付録A
-
-## 因子型(factor 型) {#factor}
-- **forcats** パッケージ
-- https://kazutan.github.io/kazutanR/forcats_test.html
 
 # まとめ {#matome_all}
 ## Contents {#contents2}
