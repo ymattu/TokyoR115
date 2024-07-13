@@ -1,8 +1,8 @@
 ---
 title: "初心者セッション"
-subtitle: "R入門〜データハンドリング基礎"
+subtitle: "R入門〜tidyverse"
 author: "y__mattu"
-date: "2024-06-08 TokyoR #113"
+date: "2024-07-13 TokyoR #114"
 output:
   revealjs::revealjs_presentation:
     self_contained: false
@@ -41,7 +41,7 @@ options(dplyr.print_max = 1e9)
 <div class="column1">
 - 松村優哉
 - <u>Twitter</u>: **y\_\_mattu**
-- Data Scientist @Novasell
+- Data Scientist
 - 学生時代: 計量経済学、ベイズ統計、因果推論、マーケティング
 - R歴: 10年目
 - https://ymattu.github.io/
@@ -216,6 +216,100 @@ library(tidyverse)
 - 読み込みの関数は、プロジェクトの中のファイルを探しにいきます。
 - 書籍によっては `setwd()` で作業場所をしているものもある を書いているものもありますが、RStudioプロジェクトでは必要ありません。
     - むしろ、RStudio プロジェクトでは非推奨
+    
+# いよいよデータの読み込み
+
+
+# ローカルにあるファイル
+
+# csv
+## `read.csv()`
+- パッケージを使わない方法
+```{r eval=FALSE}
+dat <- read.csv("sample.csv")
+```
+
+- R < 4.0.0 では `stringsAsFactors = TRUE` がデフォルトになっているので、`stringsAsFactors = FALSE` をつけることを推奨します。
+
+```{r eval=FALSE}
+dat <- read.csv("sample.csv", stringsAsFactors = FALSE)
+```
+
+## `readr::read_csv()`
+- 高速で、列の型をいい感じにやってくれる(オススメ)
+```{r eval=FALSE}
+dat <- readr::read_csv("sample.csv")
+```
+
+## `data.table::fread()`
+- `readr::read_csv()`
+よりも高速
+- デフォルトでは、data.table というデータフレームとは別の形で読み込まれるのでデータフレームがいいときは `data.table = FALSE`
+
+```{r eval=FALSE}
+library(data.table)
+dat <- fread("sample.csv", data.table = FALSE)
+```
+
+
+## どれがいいのか
+- 個人的には **readr**パッケージの `read_***()`関数が一番オススメ
+- 速い、エンコーディング（文字化け回避）の調整が難しくない
+
+|                        | read.\*\*\* | read_\*\*\* | fread |
+|------------------------|----------|----------|-------|
+| 速さ(45MB)            | 3秒    | 0.8 秒      |  0.6秒   |
+| 区切り値の判定ミス   | ×        | ×        | △     |
+| エンコーディング | ○        | ○        | △     |
+
+# xlsx, xls
+## エクセルファイル
+### エクセルファイルを読み込めるパッケージ
+- xlsx
+- gdata
+- XLConnect
+- openxlsx
+- **readxl** → オススメ(速い、列の型をいい感じに読める)
+
+## 読み込み方
+```{r eval=FALSE}
+dat <- readxl::read_excel("sample.xlsx", sheet = "シート名")
+# シート名はシート番号でも OK
+```
+
+
+# 文字コードの指定
+## エンコーディング問題
+- Windows の文字コードは **Shift-JIS（CP932）**
+- Mac の文字コードは **UTF8**
+- Windows で作られた（日本語を含む）ファイルを Mac で読むときは `Encoding=cp932`
+- Mac で作られた（日本語を含む）ファイルを Windows で読むときは `Encoding=UTF8`
+
+## csv を CP932 で読む
+### R の標準関数
+```{r eval=FALSE}
+dat <- read.csv("sample.csv", stringAsFactors = FALSE, fileEncoding = "cp932")
+```
+
+### readr
+```{r eval=FALSE}
+dat <- readr::read_csv("sample.csv", locale = locale(encoding = "cp932"))
+```
+
+### data.table
+```{r eval=FALSE}
+dat <- data.table::fread("sample.csv", data.table = FALSE) %>%
+  dplyr::mutate(VAR1 = iconv(VAR1, from = "UTF8", to = "CP932"))
+```
+
+# 関数とかオプション（引数）を <br> 覚えられない
+## RStudio の GUI 読み込み {#importdataset1}
+
+![dataimport](./slide_img/dataimport.png)
+
+
+## RStudio の GUI 読み込み {#importdataset2}
+![dataimport2](./slide_img/dataimport2.png)
 
 
 # %>%, |> {#pipe}
