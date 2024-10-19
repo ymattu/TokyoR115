@@ -1,8 +1,8 @@
 ---
 title: "初心者セッション"
-subtitle: "R入門〜tidyverse"
+subtitle: "R入門〜データハンドリング入門"
 author: "y__mattu"
-date: "2024-07-13 TokyoR #114"
+date: "2024-10-19 TokyoR #115"
 output:
   revealjs::revealjs_presentation:
     self_contained: false
@@ -46,7 +46,7 @@ options(dplyr.print_max = 1e9)
 - R歴: 10年目
 - https://ymattu.github.io/
 - http://y-mattu.hatenablog.com/
-- Tokyo.R 運営(初心者セッションとか)
+- 近況: 30歳になりました
 </div>
 
 <div class="column2">
@@ -92,7 +92,7 @@ options(dplyr.print_max = 1e9)
 - パッケージ名だけでも覚えて帰っていただけると嬉しいです。
 
 ## データ分析の(おおまかな)流れ {#flow_of_analysis2}
-![](slide_img/data_analysis3.png)
+![](slide_img/data_analysis2.png)
 
 # RとRStudioについて {#r_and_rstudio}
 ## Rとは {#aboutR}
@@ -109,10 +109,10 @@ options(dplyr.print_max = 1e9)
 
 ## R の環境構築 {#installR}
 - R のインストールは、[CRAN](https://www.r-project.org/)から、自分のOSに合ったものを。
-- 2024/07/13時点の最新版は、4.4.1
+- 2024/10/19時点の最新版は、4.4.1
     - 本日の内容に関しては、4.X.X以上であれば概ね問題ないと思われます
     
-![](./slide_img/r441.png)
+![](./slide_img/r441_2.png)
 
 - 3.X.X→4.X.Xの変更点
     - [R 4.0.0 リリース - Qiita](https://qiita.com/piccolist/items/80f47a11d68dfe904cca)
@@ -339,14 +339,40 @@ sum(1:3)
     - Windows: `Ctrl` + `Shift` + `M`
     - Mac: `Cmd` + `Shift` + `M`
 
-# 1. tidy data {#tidydata}
-## データの形式 {#data_format}
-２つのデータ形式(例: カテゴリごとの購買金額(千円))
+# データハンドリング事始め {#datahandling}
 
+## データハンドリングでやること、例えば {#datahandling_todo}
+- 縦横変換
+- 絞り込み(列・行)
+- 新しい変数の作成
+- 集計
+- テーブルのマージ
+- etc...
+→分析できる形に整形する
+
+## データハンドリング編のゴール {#datahandlinggoal}
+1. tidy data をざっくり理解する
+2. dplyrで簡単な集計ができるようになる
+
+# 1. tidy data {#tidydata}
+
+## 使用するパッケージ {#package_tidyrr}
 <div class="column1">
-### Wide 型
+![tidyr](slide_img/tidyr_logo.png)
+
+</div>
+
+<div class="column2">
+#### 特徴
+- (大きいデータだと特に) <br> 速い
+- 簡単 <br> ≒　わかりやすい
+- 他の tidyverse のパッケージと相性がいい
+</div>
+
+## データの形式1. Wide 型{#wide_data}
+２つのデータ形式(例: カテゴリごとの購買金額(千円))
 ```{r echo=FALSE}
-dat_messy <- tibble(user = c('A', 'B', 'C'),
+dat_messy <- tibble::tibble(user = c('A', 'B', 'C'),
                     category1 = c(10, 15, 8),
                     category2 = c(2, 4, 5))
 dat_messy %>%
@@ -357,13 +383,12 @@ dat_messy %>%
     scrollCollapse = TRUE
   ))
 ```
-</div>
 
-<div class="column2">
-### Long 型
+## データの形式2. Long 型{#long_data}
+２つのデータ形式(例: カテゴリごとの購買金額(千円))
 ```{r echo=FALSE}
 dat_tidy <- dat_messy %>%
-  gather(key = category, value = sum_price, -user)
+  tidyr::pivot_longer(names_to = "category", values_to = "price", -user)
 dat_tidy %>%
   DT::datatable(extensions = 'FixedColumns',
   options = list(
@@ -372,7 +397,7 @@ dat_tidy %>%
     scrollCollapse = TRUE
   ))
 ```
-</div>
+
 
 ## tidy data {#def_tidydata}
 - 2016 年に Hadley Wickham 氏が提唱
@@ -382,7 +407,7 @@ dat_tidy %>%
     - **1つのテーブルが1つのデータセットを含む**
 - Rでのtidy data は、Long 型。
 
-## tidyr {#tidyr}
+## tidyr {#tidyr_overview}
 ![gather_spread](slide_img/tidyr1.png)
 
 ## tidyrでの縦横変換の例 {#example_tidyr1}
@@ -441,13 +466,229 @@ dat_long
 ## 参考: tidyr (〜2019/09/11) {#tidyr_old}
 ![gather_spread](slide_img/gather_spread.png)
 
+# dplyrによるデータハンドリング
+## 使用するパッケージ {#package_dplyr}
+<div class="column1">
+![dplyr](slide_img/dplyr1_logo.png)
+
+</div>
+
+<div class="column2">
+#### 特徴
+パッケージを使わないやり方より
+
+- (大きいデータだと特に) <br> 速い
+- 簡単 <br> ≒　わかりやすい
+- 他の tidyverse のパッケージと相性がいい
+</div>
+
+# 扱うデータ {#todaysdata}
+## EC サイトのログデータ {#ecsitedata}
+- を意識して作ったダミーデータ
+- https://github.com/ymattu/sampledata_small
+![データの説明](slide_img/data_summary.png)
+
+## データの読み込み方 {#prepare_data}
+1. RStudio のプロジェクトを作成
+2. Terminal ペインで以下を実行
+```
+git clone https://github.com/ymattu/sampledata_small
+```
+3. readr パッケージの関数で読み込み
+```{r }
+sales <- read_csv("sampledata_small/csv/Sales.csv")
+product <- read_csv("sampledata_small/csv/Products.csv")
+user_master <- read_csv("sampledata_small/csv/UserMaster.csv")
+```
+
+# **dplyr** の基本関数 {#dplyr_basic}
+## 列選択 {#select}
+```{r, eval=FALSE}
+sales %>%
+  select(UserID) %>%
+  head()
+```
+```{r,echo=FALSE}
+sales %>%
+  select(UserID) %>%
+  head() %>%
+  DT::datatable(extensions = 'FixedColumns',
+  options = list(
+    dom = 't',
+    scrollX = TRUE,
+    scrollCollapse = TRUE
+  ))
+```
+
+## 列選択のやりかたいろいろ {#selectfunctions}
+例
+```{r eval=FALSE}
+select(product, 1:3) # 列番号が連続している場合
+select(product, ProductID:Price) # 列名でも連続していれば同様
+select(product, !CreatedDate) # 特定の列を除く
+select(product, !4) # 特定の列番号を除く
+select(product, starts_with("p")) # "p"で始まる列のみを選択
+select(product, starts_with("p"), ignore.case = TRUE) # 大文字小文字を無視
+select(product, starts_with("p") & ends_with("e")) # "p"で始まり"e"で終わる列を選択
+select(product, matches("^(Product|Price)")) # 正規表現で列名を検索
+```
+
+- 詳しくは[公式リファレンス](https://dplyr.tidyverse.org/reference/select.html)を参照
+
+## 列追加 {#mutate}
+- 税込み価格を計算
+```{r, eval=FALSE}
+product %>%
+  mutate(zeikomi = Price * 1.1) %>%
+  head(4)
+```
+```{r, echo=FALSE}
+product %>%
+  mutate(zeikomi = Price * 1.1) %>%
+  head(4) %>%
+  DT::datatable(extensions =  'FixedColumns',
+  options = list(
+    dom = 't',
+    scrollX = TRUE,
+    scrollCollapse = TRUE
+  ))
+```
+
+## 行の絞り込み {#filter}
+```{r, eval=FALSE}
+user_master %>%
+  filter(Age >= 20, Sex == "F") # 年齢 20 歳以上の女性
+```
+```{r, echo=FALSE}
+user_master %>%
+  filter(Age >= 20, Sex == "F") %>%
+  DT::datatable(extensions =  'FixedColumns',
+  options = list(
+    deferRender = TRUE,
+    dom = "t",
+    scrollX = TRUE,
+    scrollY = 200,
+    scrollCollapse = TRUE
+  ))
+```
+
+## 集計
+- グルーピング + 集計
+```{r, eval=FALSE}
+sales %>%
+  group_by(UserID) %>%
+  summarise(buy_count = n())
+```
+```{r, echo=FALSE}
+sales %>%
+  group_by(UserID) %>%
+  summarise(buy_count = n()) %>%
+  DT::datatable(extensions =  'FixedColumns',
+  options = list(
+    deferRender = TRUE,
+    dom = "t",
+    scrollX = TRUE,
+    scrollY = 200,
+    scrollCollapse = TRUE
+  ))
+```
+
+# ここまでやったところで
+## パッケージを使わないでできないの？{#withoutpackage}
+- できるものもあります。
+- select, filter あたりはできます。
+- でもめんどくさい
+- しかもデータが大きいと遅い
+- このあたり、私の[過去資料](https://ymattu.github.io/TokyoR64/beginner/for_beginners.html#22)もみてね
+- でも`$`はお手軽だしよく使います。
+
+## `$`で 1 列だけ取り出す {#dollar}
+```{r }
+product$Category %>%
+  unique()
+```
+
+# 日付の操作 {#date}
+## **lubridate** パッケージ {#lubridate}
+<div class="column1">
+![lubridate](slide_img/lubridate.png)
+</div>
+<div class="column2">
+- 日付の操作をよしなにやってくれるパッケージ
+```{r }
+library(lubridate)
+ymd("20110604")
+ymd(20120101) + years(1)
+```
+詳しくは[こちら](http://estrellita.hatenablog.com/entry/2015/06/18/080651)や[こちら](http://estrellita.hatenablog.com/entry/2015/06/18/080651)を参照
+</div>
+
+## データハンドリングでの使い所 {#lubridate_dplyr}
+たくさんあるけど例えば
+```{r, eval=FALSE}
+sales %>%
+  mutate(buy_year = year(Timestamp)) %>%
+  head()
+```
+```{r, echo=FALSE}
+sales %>%
+  mutate(buy_year = year(Timestamp)) %>%
+  head() %>%
+  DT::datatable(extensions =  'FixedColumns',
+  options = list(
+    deferRender = TRUE,
+    dom = "t",
+    scrollX = TRUE,
+    scrollY = 200,
+    scrollCollapse = TRUE
+  ))
+```
+
+## ここから集計につなげる {#groupyear}
+ユーザー、年ごとに集計
+```{r, eval=FALSE}
+sales %>%
+  mutate(buy_year = year(Timestamp)) %>%
+  group_by(UserID, buy_year) %>%
+  summarise(buy_count = n()) %>%
+  arrange(UserID) %>% 
+  head()
+```
+```{r, echo=FALSE}
+sales %>%
+ mutate(buy_year = year(Timestamp)) %>%
+ group_by(UserID, buy_year) %>%
+ summarise(buy_count = n()) %>%
+ arrange(UserID) %>%
+ head() %>%
+ DT::datatable(extensions =  'FixedColumns',
+ options = list(
+   deferRender = TRUE,
+   dom = "t",
+   scrollX = TRUE,
+   scrollY = 200,
+   scrollCollapse = TRUE
+ ))
+```
+
+# その他、代表的な <br>（面倒くさい）型たち {#othertype}
+## 文字列型 {#character}
+- **stringr** パッケージ
+- https://kazutan.github.io/kazutanR/stringr-intro.html
+- 『RユーザーのためのRStudio実践入門　改定2版』付録A
+
+## 因子型(factor 型) {#factor}
+- **forcats** パッケージ
+- https://kazutan.github.io/kazutanR/forcats_test.html
+
 # まとめ {#matome_all}
 ## Contents {#contents2}
 - R と RStudio について 
 - データの読み込み
-- データハンドリング事始め
-    - tidyverse について
     - readrパッケージを用いたテーブルデータの読み込み
+- tidyverse について
+    - tidy data について
+- データハンドリング事始め
     - dplyrの基礎
 
 ## ありがとうございました {#enjoy}
